@@ -26,10 +26,13 @@ def draw_board(im):
                 for j in range(size):
                     im.putpixel ((x + j, y + i), (0, 0, 0))
 
-def draw(im):
+def draw():
+    os.system("mkdir -p tmp")
+    os.system("screencapture tmp/sc.png")
+    im = Image.open("tmp/sc.png")
     draw_start(im)
     draw_board(im)
-
+    im.show()
 #take
 def take_start(im):
     R, G, B = 0, 0, 0
@@ -80,45 +83,57 @@ def run():
         autopy.mouse.move(startX + spanX / 2, startY + spanY / 2)
         time.sleep(2)
         autopy.mouse.click()
-        time.sleep(2)
+        return
+    board = board_data(im)
+    if board[3][3] == 0:
+        autopy.mouse.move(300, 500)
         autopy.mouse.click()
-    else:
-        board = board_data(im)
-        flag1, flag2 = True, False
+        return
+    flag1, flag2 = 0, 0
+    for ary in board:
+        for i in ary:
+            if i == 4:
+                flag1 += 1
+            if i == 2:
+                flag2 += 1
+    if flag1 >= 2 or flag2 >= 2:
+        time.sleep(5)
+        print "waiting..."
+        return
+    if True:
+        f = open('tmp/input', 'w')
         for ary in board:
             for i in ary:
-                if i == 4:
-                    flag1 = False
-                if i == 2:
-                    flag2 = True
-        if flag1 and flag2:
-            output_data(board)
-            f = open('tmp/input', 'w')
-            for ary in board:
-                for i in ary:
-                    if i == 0:
-                        f.write(".")
-                    elif i <= 2:
-                        f.write("x")
-                    elif i <= 4:
-                        f.write("o")
-                f.write("\n")
-            f.close()
-            os.system("./a.out < tmp/input > tmp/output")
-            x, y = 0, 0
-            for line in open('tmp/output', 'r'):
-                items = line.split(' ')
-                y = int(items[0])
-                x = int(items[1])
-            xx = pX + span / 2 + span * x
-            yy = pY + span / 2 + span * y
-            autopy.mouse.smooth_move(xx, yy)
+                if i == 0:
+                    f.write(".")
+                elif i <= 2:
+                    f.write("x")
+                elif i <= 4:
+                    f.write("o")
+            f.write("\n")
+        f.close()
+        os.system("./a.out < tmp/input > tmp/output")
+        x, y = 0, 0
+        for line in open('tmp/output', 'r'):
+            items = line.split(' ')
+            y = int(items[0])
+            x = int(items[1])
+        xx = pX + span / 2 + span * x
+        yy = pY + span / 2 + span * y
+        autopy.mouse.move(xx, yy)
+        os.system("screencapture tmp/sc.png")
+        im = Image.open("tmp/sc.png")
+        board2 = board_data(im)
+        if board == board2:
             autopy.mouse.click()
+        time.sleep(1)
 
 def main():
+    # draw()
+    # return
     os.system("g++-4.9 --std=c++11 src/othello.cpp")
     while True:
-        time.sleep(3)
+        time.sleep(1)
         run()
 
 main()

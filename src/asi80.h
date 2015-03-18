@@ -13,7 +13,7 @@
 #include "othellolib.h"
 
 #define DEBUG false
-#define S_DEBUG false
+#define S_DEBUG true
 
 using namespace std;
 
@@ -240,8 +240,8 @@ struct AI80 {
         if(abs(val) == 99999) cout << "*" << endl; else cout << val << endl;
       }
     }
-    if(DEBUG) cout << "Value : " << value << endl;
-    if(S_DEBUG) printf ("=> %.2lf : %.2lf\n", 32+value/120.0, 32-value/120.0);
+    if (DEBUG) cout << "Value : " << value << endl;
+    if (S_DEBUG) fprintf (stderr, "=> %.2lf : %.2lf\n", 32+value/120.0, 32-value/120.0);
     
     return res;
   }
@@ -250,9 +250,9 @@ struct AI80 {
     int rest=0;
     for(int i=1;i<9;i++)for(int j=1;j<9;j++)rest+=(m[i][j]==0);
     pair<int,int> p;
-    if(rest==59) tlims = 3.0;
-    else if(rest>16) tlims = 3.0;
-    else tlims = 3.0;
+    if(rest==59) tlims = 1.0;
+    else if(rest>16) tlims = 1.0;
+    else tlims = 1.0;
     if (DEBUG) cerr << rest << endl;
     if(rest==60) return make_pair(6, 5);
     else {
@@ -265,7 +265,7 @@ struct AI80 {
         if((double)clock() - start > CLOCKS_PER_SEC * tlims) return p;
         p = q;
       }
-      if (S_DEBUG) cout << "COMPLETE!!" << endl;
+      if (S_DEBUG) cerr << "COMPLETE!!" << endl;
     }
     //while((double)clock() - start < CLOCKS_PER_SEC * 1.0);
     return p;
