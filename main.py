@@ -3,16 +3,35 @@
 import Image
 import autopy
 import os
+import time
 
-pX = 170
-pY = 150
-size = 50
-span = 56
+pX, pY = 180, 225
+size, span = 30, 56
 
-def draw_box(im, a, b):
+boxs = size * size
+
+def draw_box(im, x, y):
     for i in range(size):
         for j in range(size):
-            im.putpixel ((a + j, b + i), (0, 0, 0))
+            im.putpixel ((x + j, y + i), (0, 0, 0))
+
+def take_box(im, x, y):
+    R, G, B = 0, 0, 0
+    for i in range(size):
+        for j in range(size):
+            r, g, b = im.getpixel ((x + j, y + i))
+            R, G, B = R + r, G + g, B + b
+    R, G, B = R / boxs, G / boxs, B / boxs
+    if G - B > 10:
+        return 0
+    elif B > 200:
+        return 3
+    elif B > 105:
+        return 4
+    elif R > 53:
+        return 2
+    else:
+        return 1
 
 def screen_data():
     os.system("mkdir -p tmp")
@@ -20,7 +39,8 @@ def screen_data():
     im = Image.open("tmp/sc.png")
     for i in range(8):
         for j in range(8):
-            draw_box(im, pX + j * span, pY + i * span)
-    im.show()
+            p = take_box(im, pX + j * span, pY + i * span)
+            print p, " ",
+        print ""
 
 screen_data()
