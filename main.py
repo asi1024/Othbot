@@ -10,12 +10,14 @@ size, span = 30, 56
 
 boxs = size * size
 
-def draw_box(im, x, y):
+def draw_box(im, row, col):
+    x, y = pX + col * span, pY + row * span
     for i in range(size):
         for j in range(size):
             im.putpixel ((x + j, y + i), (0, 0, 0))
 
-def take_box(im, x, y):
+def take_box(im, row, col):
+    x, y = pX + col * span, pY + row * span
     R, G, B = 0, 0, 0
     for i in range(size):
         for j in range(size):
@@ -39,7 +41,7 @@ def screen_data():
     im = Image.open("tmp/sc.png")
     for i in range(8):
         for j in range(8):
-            p = take_box(im, pX + j * span, pY + i * span)
+            p = take_box(im, i, j)
             print p, " ",
         print ""
 
