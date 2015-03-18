@@ -72,7 +72,7 @@ def board_data(im):
             dat[i][j] = take_box(im, i, j)
     return dat
 
-def screen_data():
+def run():
     os.system("mkdir -p tmp")
     os.system("screencapture tmp/sc.png")
     im = Image.open("tmp/sc.png")
@@ -82,6 +82,27 @@ def screen_data():
         autopy.mouse.click()
         time.sleep(2)
         autopy.mouse.click()
-    output_data(board_data(im))
+    else:
+        board = board_data(im)
+        flag1, flag2 = True, False
+        for ary in board:
+            for i in ary:
+                if i == 4:
+                    flag1 = False
+                if i == 2:
+                    flag2 = True
+        if flag1 and flag2:
+            output_data(board)
+            f = open('tmp/input', 'w')
+            for ary in board:
+                for i in ary:
+                    if i == 0:
+                        f.write(".")
+                    elif i <= 2:
+                        f.write("x")
+                    elif i <= 4:
+                        f.write("o")
+                f.write("\n")
+            f.close()
 
-screen_data()
+run()
