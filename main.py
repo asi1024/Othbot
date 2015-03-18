@@ -104,5 +104,21 @@ def run():
                         f.write("o")
                 f.write("\n")
             f.close()
+            os.system("./a.out < tmp/input > tmp/output")
+            x, y = 0, 0
+            for line in open('tmp/output', 'r'):
+                items = line.split(' ')
+                y = int(items[0])
+                x = int(items[1])
+            xx = pX + span / 2 + span * x
+            yy = pY + span / 2 + span * y
+            autopy.mouse.smooth_move(xx, yy)
+            autopy.mouse.click()
 
-run()
+def main():
+    os.system("g++-4.9 --std=c++11 src/othello.cpp")
+    while True:
+        time.sleep(3)
+        run()
+
+main()
