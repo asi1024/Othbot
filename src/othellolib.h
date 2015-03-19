@@ -53,3 +53,19 @@ void put_it (Mat &m, int me, int y, int x) {
     rev(m,me,y+yy[i],x+xx[i],yy[i],xx[i]);
   m[y][x] = me;
 }
+
+void rotate (Mat &m) {
+  Mat a=m;
+  for (int i = 1; i < 9; i++)
+    for (int j = 1; j < 9; j++)
+      a[i][j] = m[9-j][i];
+  m=a;
+  return;
+}
+
+void horizonal (Mat &m) {
+  for (int i = 1; i <= 4; i++)
+    for (int j = 1; j <= 8; j++)
+      swap(m[i][j], m[9-i][j]);
+  return;
+}

@@ -1,8 +1,3 @@
-
-//
-// version 8.0
-//
-
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -14,14 +9,14 @@
 #include <set>
 #include <algorithm>
 #include <ctime>
-#include "asi80.h"
+#include "asi90.h"
 
 using namespace std;
 
 typedef vector<vector<char> > Mat;
 
 pair<int,int> put_player (Mat m, int me) {
-  struct AI80 x;
+  struct AI90 x(1);
   return x.put_disk(m, me);
 }
 
